@@ -7,7 +7,6 @@ async function run() {
             if (!out.output[out.count]) out.output[out.count] = 0
             out.output[out.count] += Number(a)
         } else {
-            console.log("Next!")
             out.count += 1
         }
     }
