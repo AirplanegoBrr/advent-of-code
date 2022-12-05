@@ -34,7 +34,27 @@ for (var a of file){
     //console.log(scoreCal[picks[0]], scoreCal[picks[1]])
     var oppType = scoreCal[picks[0]]
     var meType = scoreCal[picks[1]]
-    // I dont know.
-    // I give up.
+
+    if (meType === oppType) {
+        score += 3 + scoreCal[meType]
+    } else if (meType === 'R') {
+        if (oppType === 'P') {
+            score += 0 + scoreCal[meType]
+        } else {
+            score += 6 + scoreCal[meType]
+        }
+    } else if (meType === 'P') {
+        if (oppType === 'S') {
+            score += 0 + scoreCal[meType]
+        } else {
+            score += 6 + scoreCal[meType]
+        }
+    } else if (meType === 'S') {
+        if (oppType === 'R') {
+            score += 0 + scoreCal[meType]
+        } else {
+            score += 6 + scoreCal[meType]
+        }
+    }
 }
 console.log(score)
