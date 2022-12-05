@@ -11,7 +11,6 @@
 
 const fs = require("fs")
 var file = fs.readFileSync("input.txt").toString().split("\r\n")
-var score = 0
 
 const scoreCal = {
     X: "R",
@@ -27,34 +26,71 @@ const scoreCal = {
     S: 3
 }
 
-var wins = 0
-var draws = 0
+var score1 = 0
+var score2 = 0
+
+
+function thing(oppType, meType){
+    var score = 0
+    if (meType === oppType) {
+        score  += 3 + scoreCal[meType]
+    } else if (meType === 'R') {
+        if (oppType === 'P') {
+            score  += 0 + scoreCal[meType]
+        } else {
+            score  += 6 + scoreCal[meType]
+        }
+    } else if (meType === 'P') {
+        if (oppType === 'S') {
+            score  += 0 + scoreCal[meType]
+        } else {
+            score  += 6 + scoreCal[meType]
+        }
+    } else if (meType === 'S') {
+        if (oppType === 'R') {
+            score  += 0 + scoreCal[meType]
+        } else {
+            score  += 6 + scoreCal[meType]
+        }
+    }
+    return score
+}
+
 for (var a of file){
     var picks = a.split(" ")
     //console.log(scoreCal[picks[0]], scoreCal[picks[1]])
     var oppType = scoreCal[picks[0]]
     var meType = scoreCal[picks[1]]
 
-    if (meType === oppType) {
-        score += 3 + scoreCal[meType]
-    } else if (meType === 'R') {
-        if (oppType === 'P') {
-            score += 0 + scoreCal[meType]
-        } else {
-            score += 6 + scoreCal[meType]
+    score1 += thing(oppType, meType)
+}
+console.log("Part1",score1 )
+
+for (var a of file){
+    var picks = a.split(" ")
+    //console.log(scoreCal[picks[0]], scoreCal[picks[1]])
+    var oppType = scoreCal[picks[0]]
+    if (picks[1] == "Y") {
+        // Draw
+        score2 += thing(oppType,oppType)
+    } else if (picks[1] == "Z") {
+        // Win
+        if (oppType == "R") {
+            score2 += thing(oppType, "P")
+        } else if (oppType == "P") {
+            score2 += thing(oppType, "S")
+        } else if (oppType == "S") {
+            score2 += thing(oppType, "R")
         }
-    } else if (meType === 'P') {
-        if (oppType === 'S') {
-            score += 0 + scoreCal[meType]
-        } else {
-            score += 6 + scoreCal[meType]
-        }
-    } else if (meType === 'S') {
-        if (oppType === 'R') {
-            score += 0 + scoreCal[meType]
-        } else {
-            score += 6 + scoreCal[meType]
+    } else if (picks[1] == "X") {
+        // Lose
+        if (oppType == "R") {
+            score2 += thing(oppType, "S")
+        } else if (oppType == "P") {
+            score2 += thing(oppType, "R")
+        } else if (oppType == "S") {
+            score2 += thing(oppType, "P")
         }
     }
 }
-console.log(score)
+console.log("Part1",score2 )
