@@ -7,8 +7,11 @@ const db2 = new dbClass("database2.json") // stfu
 
 var val = 0
 
-async function getSizeOfDir(dir, path){
+async function getSizeOfDir(dir){
     var size = 0
+
+    db.data = {}
+    await db.save()
 
     for (var a in dir){
         const type = typeof(dir[a])
@@ -16,17 +19,12 @@ async function getSizeOfDir(dir, path){
             var s = Number(dir[a])
             size += s;
         } else if (type == "object"){
-            var size = await getSizeOfDir(dir[a], path)
-            val += Number(size)
+            await getSizeOfDir(dir[a])
         }
     }
     if (size && size < 100000) {
-        console.log(size)
-        return size
-
-        // val += size;
-    } else {
-        return 0
+        // console.log(size)
+        val += Number(size);
     }
 }
 // 1704740
@@ -78,7 +76,7 @@ async function main(){
     var a = []
     await db.load()
     var data = db.data
-    console.log(data)
+    // console.log(data)
     await getSizeOfDir(data)
     console.log(val)
 }
