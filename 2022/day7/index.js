@@ -5,22 +5,35 @@ const dbClass = require("@airplanegobrr/database")
 const db = new dbClass()
 const db2 = new dbClass("database2.json") // stfu
 
+var val = 0
+
 async function getSizeOfDir(dir, path){
-    var dirSizes = {}
     var size = 0
 
     for (var a in dir){
         const type = typeof(dir[a])
         if (type == "string") {
-            size += Number(dir[a])
+            var s = Number(dir[a])
+            size += s;
         } else if (type == "object"){
-            path += `${a}.`
-            const back = await getSizeOfDir(dir[a], path)
-            console.log(back)
+            var size = await getSizeOfDir(dir[a], path)
+            val += Number(size)
         }
     }
-    return { size, dirSizes, path }
+    if (size && size < 100000) {
+        console.log(size)
+        return size
+
+        // val += size;
+    } else {
+        return 0
+    }
 }
+// 1704740
+// 2570369
+// 3346673
+// 25452855
+// 27094788 ?????
 
 async function main(){
     const fileRaw = fs.readFileSync("input.txt").toString().split("\r\n")
@@ -30,7 +43,6 @@ async function main(){
     var files = {}
 
     for (var thing of fileRaw){
-        continue
         // console.log(thing)
         if (thing.startsWith("$")){
             var command = thing.replace("$ ", "")
@@ -67,6 +79,7 @@ async function main(){
     await db.load()
     var data = db.data
     console.log(data)
-    console.log(await getSizeOfDir(data), "")
+    await getSizeOfDir(data)
+    console.log(val)
 }
 main()
